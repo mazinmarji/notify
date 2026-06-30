@@ -3,5 +3,6 @@ __pycache__/
 .pytest_cache/
 *.pyc
 .nornyx-check/
+.policy-conformance.yaml
 # .nyx-out/ is committed: it is the generated control-artifact set the
 # `nornyx drift` gate checks (BRD G-5). Regenerate with `nornyx generate`.

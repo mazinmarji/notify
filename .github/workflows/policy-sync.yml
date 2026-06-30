@@ -1,0 +1,39 @@
+name: policy-sync
+
+# When the canonical SafeDeliveryPolicy in agenticnetworks-governance changes,
+# pull it into this repo's contract, regenerate the control artifacts, and open
+# a PR for a human to approve. Uses only this repo's GITHUB_TOKEN (same-repo PR),
+# so no cross-repo write token is needed.
+on:
+  schedule:
+    - cron: "0 6 * * 1"   # weekly, Monday 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install nornyx
+      - name: Sync canonical org policy into this repo
+        run: python scripts/policy_conformance.py --write
+      - uses: peter-evans/create-pull-request@v6
+        with:
+          title: "Sync org SafeDeliveryPolicy from governance"
+          commit-message: "chore: sync org policy from agenticnetworks-governance"
+          branch: policy-sync
+          delete-branch: true
+          body: |
+            The canonical `SafeDeliveryPolicy` in
+            [agenticnetworks-governance](https://github.com/mazinmarji/agenticnetworks-governance)
+            changed. This PR propagates it into this repo's contract and
+            regenerates the control artifacts so the drift gate stays green.
+
+            A human reviews and merges — AI is a delivery surface, never the approver.
