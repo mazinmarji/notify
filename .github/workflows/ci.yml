@@ -24,5 +24,10 @@ jobs:
       - name: Drift gate (full generated set == contract)
         run: nornyx drift notify.nyx --out .nyx-out
 
+      # Cross-repo governance: this repo's SafeDeliveryPolicy must match the
+      # canonical one in agenticnetworks-governance (fetched live, single source).
+      - name: Org-policy conformance
+        run: python scripts/policy_conformance.py
+
       - name: Tests
         run: pytest -q
