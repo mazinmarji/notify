@@ -1,0 +1,23 @@
+{
+  "contract": "notify.nyx",
+  "approval": "HumanMergeApproval",
+  "required_for": ["merge", "policy_change"],
+  "note": "Nornyx is a spec/checker layer, not a runtime; it declares and records the approval requirement. The human approval below is recorded by the accountable engineer at merge time, per policy `require human_approval_before_merge`. AI is a delivery surface, never the approver.",
+  "events": [
+    {
+      "event": "approval_requested",
+      "change": "Initial NotifySvc delivery (FR-1..FR-7, NFR-1..NFR-4)",
+      "tests": "23 passed",
+      "drift_gate": "pass",
+      "workspace_check": "pass (SafeDeliveryPolicy matches org standard)",
+      "requested_by": "Builder (AI surface)"
+    },
+    {
+      "event": "approval_granted",
+      "approver_role": "accountable_engineer",
+      "approver": "<to be signed by the human merging this change>",
+      "decision": "approved",
+      "basis": "evidence/test_report.txt, evidence/brd_conformance.md"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+evals:
+- name: NotifyEval
+  metrics:
+  - tests_pass == true
+  - routing_is_deterministic == true

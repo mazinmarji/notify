@@ -1,0 +1,17 @@
+contexts:
+- name: RepoContext
+  include:
+  - app/**/*.py
+  - tests/**/*.py
+  authority:
+  - docs/BRD.md
+  exclude:
+  - .venv/**
+  - '**/.env'
+  budget:
+    max_tokens: 24000
+    reserve_output_tokens: 4000
+  taint:
+    repo: trusted_repo_file
+    user_prompt: untrusted
+    external_web: untrusted

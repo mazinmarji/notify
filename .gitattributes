@@ -1,0 +1,3 @@
+# Nornyx generate emits LF. Pin LF on checkout everywhere so the hash-based
+# `nornyx drift` gate is deterministic across platforms (no CRLF false drift).
+* text=auto eol=lf

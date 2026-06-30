@@ -1,0 +1,18 @@
+harnesses:
+- name: DeliveryHarness
+  context: RepoContext
+  flow:
+  - agent: Builder
+    action: implement
+  - tool: tests
+    action: run
+  - agent: Reviewer
+    action: review
+  repair:
+  - 'on': test_failure
+    agent: Builder
+    action: repair
+    max_attempts: 3
+  gate:
+  - require: tests.pass
+  - require: human_approval_before_merge

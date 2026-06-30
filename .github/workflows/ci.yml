@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  govern-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt   # nornyx resolves from PyPI
+
+      # Nornyx governance: the contract is valid and the control artifacts in the
+      # repo are exactly what it generates (BRD G-5 — no drift).
+      - name: Nornyx check
+        run: nornyx check notify.nyx
+      - name: Drift gate (full generated set == contract)
+        run: nornyx drift notify.nyx --out .nyx-out
+
+      - name: Tests
+        run: pytest -q
